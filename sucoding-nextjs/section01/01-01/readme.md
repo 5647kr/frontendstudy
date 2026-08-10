@@ -16,9 +16,8 @@
 3. package.json 파일에 scripts 내용의 기존 코드를 지우고 "dev": "next dev"로 변경한다.<br />
 4. app 폴더를 만들어 layout.tsx(nrlayout), page.tsx(nfce) 파일을 각각 만든다. <br />
 5. npm run dev 명령어를 실행한다. <br />
-6. 에러가 발생한다, 이는 정상적인 결과이다.
+6. 에러가 발생한다, 이는 정상적인 결과이다. <br />
 7. package.json에 "type": "commonJs" -> "type": "module"로 변경한다.
-
 
 <br />
 
