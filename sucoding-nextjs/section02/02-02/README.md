@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 02-02. 서버 컴포넌트와 클라이언트 컴포넌트 작성해보기
 
-## Getting Started
+<br />
 
-First, run the development server:
+## 📑 목차
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. [서버 컴포넌트](#1-차이점)
+1. [클라이언트 컴포넌트](#2-클라이언트-컴포넌트)
+
+<br />
+
+## 1. 서버 컴포넌트
+
+```
+export default async function Page() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos/");
+
+  const todo = await res.json();
+  return (
+    <>
+      <pre>{JSON.stringify(todo, null, 2)}</pre>
+    </>
+  );
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 서버 컴포넌트
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 이벤트 핸들러, 브라우저 전용 api를 사용할 순 없다.
+- useState, useEffect와 같은 react hook을 사용할 수 없다.
+- 데이터 패칭, 보안 로직, api 호출 담당
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<br />
 
-## Learn More
+## 2. 클라이언트 컴포넌트
 
-To learn more about Next.js, take a look at the following resources:
+```
+"use client";
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+import { useState } from "react";
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+export default function Page() {
+  const [count, setCount] = useState(0);
+  const increment = () => setCount((count) => count + 1);
+  const decrement = () => setCount((count) => count - 1);
+  const reset = () => setCount(0);
 
-## Deploy on Vercel
+  return (
+    <>
+      count: {count}
+      <button onClick={increment}>increment</button>
+      <button onClick={decrement}>decrement</button>
+      <button onClick={reset}>reset</button>
+    </>
+  )
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 클라이언트 컴포넌트
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 이벤트 처리, 상태관리, 사용자 상호작용을 담당
