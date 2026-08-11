@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 02-01. 서버 컴포넌트와 클라이언트 컴포넌트
 
-## Getting Started
+<br />
 
-First, run the development server:
+## 📑 목차
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. [차이점](#1-차이점)
+1. [규칙](#1-규칙)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 1. 차이점
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 서버 컴포넌트
 
-## Learn More
+- 컴포넌트의 기본값
+- 서버에서 코드가 실행되는 컴포넌트이다. -> 브라우저에서 실행되는 코드의 양이 줄어 클라이언트 컨포넌트의 부담을 낮춘다.
+- 보안성과 효율성이 좋다.
+- 데이터 베이스에서 데이터 조회, 외부 api로부터 데이터 통신, api키나 토큰처럼 비공개 정보가 필요한 코드를 실행할때 적합하다.
+- 이벤트 핸들러, 브라우저 전용 api를 사용할 순 없다.
+- 보안이 필요한 데이터 처리에 적합
 
-To learn more about Next.js, take a look at the following resources:
+### 클라이언트 컴포넌트
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 클라이언트에서 코드가 실행되는 컴포넌트이다.
+- 이벤트 핸들러, 브라우저 전용 api를 사용할 수 있다.
+- 최상단에 `"use client"`코드를 작성해 사용한다.
+- 사용자 상호작용과 상태관리에 적합
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<br />
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 규칙
+- 서버 컴포넌트는 클라이언트 컴포넌트의 자식 컴포넌트로 올 수 없다.
