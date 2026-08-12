@@ -1,75 +1,52 @@
-# React + TypeScript + Vite
+# 03-10.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 03-10. 미션 - UserProfile 컴포넌트 만들기
 
-Currently, two official plugins are available:
+<br />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📑 목차
 
-## React Compiler
+1. [미션 내용](#1-미션-내용)
+1. [참고 파일](#1-참고-파일)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<br />
 
-## Expanding the ESLint configuration
+## 1. 미션 내용
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 1.  USerProfile 컴포넌트는 아래와 같은 props를 받아야 한다.
+  - name(문자열) -> 사용자의 이름
+  - age (숫자) → 사용자의 나이
+  - isAdmin (불리언) → 사용자가 관리자인지 여부
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<br />
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- 2.  props에 따라 화면에 다르게 표시되어야 합니다.
+  - 사용자가 관리자인 경우 "관리자 계정"이라는 텍스트를 추가로 표시합니다.
+  - 일반 사용자일 경우 "일반 사용자"라고 표시합니다.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+<br />
 
-```
+- 3.  App 컴포넌트에서 UserProfile을 2번 렌더링해야 합니다.
+  - 한 번은 관리자 계정(Admin) 정보로 렌더링
+  - 한 번은 일반 사용자 정보로 렌더링
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+<br />
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 4.  컴포넌트 명인 UserProfile로 고정한다.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+<br />
 
-```
+- 관리자
+  - 이름: Alice
+  - 나이: 30
+  - 관리자 계정
+
+- 일반 사용자
+  - 이름: Bob
+  - 나이: 25
+  - 일반 사용자
+
+## 2. 참고 파일
+
+- App.tsx
+- components/UserProfile.tsx

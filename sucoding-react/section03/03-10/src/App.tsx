@@ -1,7 +1,10 @@
+import UserProfile from "./components/UserProfile";
+
 export default function App() {
   return (
     <>
-      <h1>App Component</h1>
+      <UserProfile name="Alice" age={30} isAdmin={true} />
+      <UserProfile name="Bob" age={25} isAdmin={false} />
     </>
   );
 }
