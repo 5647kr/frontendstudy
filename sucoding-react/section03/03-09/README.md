@@ -1,75 +1,92 @@
-# React + TypeScript + Vite
+# 03-09. children
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [기존 방법](#1-기존-방법)
+2. [스프레드 연산자 활용](#2-스프레드-연산자-활용)
+3. [참고 파일](#3-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 1. 기존 방법
 
 ```
+export default function App() {
+  return (
+    <>
+      <Button />
+    </>
+  );
+}
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+export defualt function Button() {
+  return (
+    <button>Login</button>
+  )
+}
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+위와 같을 경우 여러 컴포넌트에서 Button 컴포넌트의 텍스트는 항상 Login으로 고정된다.
+
+## 2. props 사용
 
 ```
+export default function App() {
+  return (
+    <>
+      <Button text="Login" />
+    </>
+  );
+}
+
+function Button({ text }: { text: string }) {
+  return (
+    <button>{text}</button>
+  )
+}
+```
+
+props를 사용하는 방법 외 children 방법도 있다.
+
+전개연산자로 작성한 코드는 아래 코드와 동일하다.
+
+```
+export default function App() {
+  return (
+    <>
+      <Button2>
+        Login
+      </Button2>
+    </>
+  );
+}
+
+export default function Button2(props: { children: React.ReactNode }) {
+  return (
+    <button>{props.children}</button>
+  )
+}
+
+// 전개 연산
+export default function Button2({ children }: { children: React.ReactNode }) {
+  return (
+    <button>{children}</button>
+  )
+}
+```
+
+children에도 타입을 지정해줘야한다.
+
+타입은 두가지 중 하나로 지정한다.
+
+1. React.ReactElement: JSX 요소만 허용한다. 즉 문자열, 숫자, null등은 허용되지 않는다.
+2. React.ReactNode: 문자열, 숫자, null을 포함한 JSX 까지 포함하여 이를 권장한다.
+
+## 3. 참고 파일
+
+- App.tsx
+- components/ui/Button.tsx
+- components/ui/Button2.tsx
