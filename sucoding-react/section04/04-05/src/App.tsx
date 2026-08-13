@@ -1,7 +1,10 @@
+import Button from "./components/Button";
+
 export default function App() {
   return (
     <>
-      <h1>App Component</h1>
+      <Button message="Playing!">Play Movie</Button>
+      <Button message="Uploading!">Uploading Image</Button>
     </>
   );
 }
