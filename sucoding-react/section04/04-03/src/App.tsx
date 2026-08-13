@@ -1,7 +1,8 @@
 export default function App() {
+  const handleClick = (value: string) => console.log(value);
   return (
     <>
-      <h1>App Component</h1>
+      <button onClick={() => handleClick("Hello")}>클릭</button>
     </>
   );
 }
