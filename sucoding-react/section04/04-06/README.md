@@ -1,75 +1,109 @@
-# React + TypeScript + Vite
+# 04-06. 이벤트 핸들러를 props로 전달하기
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [전달 방법](#1-전달-방법)
+2. [참고 파일](#2-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. 전달 방법
 
-## Expanding the ESLint configuration
+아래와 같이 이벤트 전달하면 된다.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```
+import { ButtonA, ButtonB, ButtonC } from "./components/Button";
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+export default function App() {
+  const handleClickC = (message: string) => {
+    console.log(message);
+  };
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  return (
+    <>
+      <ButtonA handleClickA={() => console.log("play MovieA")}>
+        Play MovieA
+      </ButtonA>
+      <ButtonA handleClickA={() => console.log("Upload ImageA")}>
+        Upload ImageA
+      </ButtonA>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+      {/* 매개변수 할당 */}
+      <ButtonB
+        handleClickB={(message: string) => console.log(message)}
+        message="Play MovieB">
+        Play MovieB
+      </ButtonB>
+      <ButtonB
+        handleClickB={(message: string) => console.log(message)}
+        message="Upload ImageB">
+        Upload ImageB
+      </ButtonB>
+
+      {/* 별도 함수 적용 */}
+      <ButtonC handleClickC={handleClickC} message="Play MovieC">
+        Play MovieC
+      </ButtonC>
+      <ButtonC handleClickC={handleClickC} message="Upload ImageC">
+        Upload ImageC
+      </ButtonC>
+    </>
+  );
+}
+
+
+export function ButtonA({
+  children,
+  handleClickA,
+}: {
+  children: React.ReactNode;
+  handleClickA: () => void;
+}) {
+  return (
+    <div>
+      <button onClick={handleClickA}>{children}</button>
+    </div>
+  );
+}
+
+export function ButtonB({
+  children,
+  message,
+  handleClickB,
+}: {
+  children: React.ReactNode;
+  message: string;
+  handleClickB: (message: string) => void;
+}) {
+  return (
+    <div>
+      <button onClick={() => handleClickB(message)}>{children}</button>
+    </div>
+  );
+}
+
+export function ButtonC({
+  children,
+  message,
+  handleClickC,
+}: {
+  children: React.ReactNode;
+  message: string;
+  handleClickC: (message: string) => void;
+}) {
+  return (
+    <div>
+      <button onClick={() => handleClickC(message)}>{children}</button>
+    </div>
+  );
+}
+
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 2. 참고 파일
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- App.tsx
+- components/Button.tsx
