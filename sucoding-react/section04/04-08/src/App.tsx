@@ -1,7 +1,17 @@
+import Button from "./components/Button";
+
 export default function App() {
+  const handleClick = (
+    message: string,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    console.log("클릭함");
+    console.log(message);
+    console.log(event);
+  };
   return (
     <>
-      <h1>App Component</h1>
+      <Button handleClick={handleClick} />
     </>
   );
 }
