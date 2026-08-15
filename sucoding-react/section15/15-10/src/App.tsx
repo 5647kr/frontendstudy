@@ -1,9 +1,8 @@
-import AxiosCrud from "./components/AxiosCrud";
-
+import Axios from "./components/Axios";
 export default function App() {
   return (
     <>
-      <AxiosCrud />
+      <Axios />
     </>
   );
 }
