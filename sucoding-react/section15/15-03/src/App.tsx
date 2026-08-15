@@ -1,7 +1,9 @@
+import Fetch from "./components/Fetch";
+
 export default function App() {
   return (
     <>
-      <h1>App Component</h1>
+      <Fetch />
     </>
   );
 }

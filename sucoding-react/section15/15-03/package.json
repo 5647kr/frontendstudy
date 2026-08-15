@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "npx json-server server/db.json",
+    "delay": "npx json-server server/db.json --delay 2000"
   },
   "dependencies": {
+    "json-server": "^0.17.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
