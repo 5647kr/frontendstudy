@@ -1,75 +1,73 @@
-# React + TypeScript + Vite
+# 15-06. fetch - 3 (signal)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [fetch](#1-fetch)
+2. [참고 파일](#2-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. fetch
 
-## Expanding the ESLint configuration
+```
+import { useEffect, useState } from "react";
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+interface Posts {
+  id: number;
+  title: string;
+  views: number;
+}
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+export default function Fetch() {
+  const [posts, setPosts] = useState<Posts[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("http://localhost:3000/posts2", { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error("네트워크 통신 오류");
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => setPosts(data))
+      .catch((e) => {
+        console.log(e);
+        if (e instanceof Error && e.name !== "AbortError") {
+          setError(e.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setIsLoading(false);
+      });
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+    return () => controller.abort();
+  }, []);
+
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <>
+      {isLoading ? (
+        <p>Loading..</p>
+      ) : (
+        <ul>
+          {posts.map((post: Posts) => (
+            <li key={post.id}>{post.title}</li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+AbortController의 인스턴스를 생성하고 fetch의 2번째 인자로 signal: controller.signal을 전달해 데이터 통신을 취소할 수 있다.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 2. 참고 파일
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- components/Fetch.tsx
