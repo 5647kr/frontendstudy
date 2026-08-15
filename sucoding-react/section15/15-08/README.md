@@ -1,75 +1,82 @@
-# React + TypeScript + Vite
+# 15-07. fetch - crud
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [crud](#1-crud)
+2. [참고 파일](#2-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. crud
 
-## Expanding the ESLint configuration
+```
+export default function FetchCrud() {
+  const fetchGet = async () => {
+    const response = await fetch("  http://localhost:3000/posts");
+    const data = await response.json();
+    console.log(data);
+  };
+  const fetchPost = async () => {
+    const response = await fetch(" http://localhost:3000/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "a new title",
+        views: 436,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+  };
+  const fetchPut = async () => {
+    const response = await fetch(" http://localhost:3000/posts/1", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "a modify title",
+        views: 155,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+  };
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  const fetchPatch = async () => {
+    const response = await fetch(" http://localhost:3000/posts/1", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "a fetch title",
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+  };
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  const fetchDelete = async () => {
+    await fetch(" http://localhost:3000/posts/101", {
+      method: "DELETE",
+    });
+  };
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  return (
+    <>
+      <button onClick={fetchGet}>GET</button>
+      <button onClick={fetchPost}>POST</button>
+      <button onClick={fetchPut}>PUT</button>
+      <button onClick={fetchPatch}>PATCH</button>
+      <button onClick={fetchDelete}>DELETE</button>
+    </>
+  );
+}
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+crud 예시 코드
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 2. 참고 파일
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- components/Fetch.tsx
