@@ -9,20 +9,28 @@ interface Posts {
 export default function Fetch() {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3000/posts")
-      .then((reponse) => {
-        return reponse.json();
+    setError("");
+    fetch("http://localhost:3000/posts2")
+      .then((response) => {
+        if (!response.ok) throw new Error("네트워크 통신 오류");
+        console.log(response);
+        return response.json();
       })
       .then((data) => setPosts(data))
+      .catch((e) => {
+        console.log(e);
+        setError(e instanceof Error ? e.message : "unknown error");
+      })
       .finally(() => {
         setIsLoading(true);
       });
   }, []);
 
-  // if(isLoading) return <p>loading..</p>
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <>

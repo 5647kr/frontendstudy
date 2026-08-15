@@ -1,75 +1,77 @@
-# React + TypeScript + Vite
+# 15-03. fetch - 3 (error)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [fetch](#1-fetch)
+2. [참고 파일](#2-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. fetch
 
-## Expanding the ESLint configuration
+```
+import { useEffect, useState } from "react";
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+interface Posts {
+  id: number;
+  title: string;
+  views: number;
+}
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+export default function Fetch() {
+  const [posts, setPosts] = useState<Posts[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  useEffect(() => {
+    setIsLoading(true);
+    setError("");
+    fetch("http://localhost:3000/posts2")
+      .then((response) => {
+        if (!response.ok) throw new Error("네트워크 통신 오류");
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => setPosts(data))
+      .catch((e) => {
+        console.log(e);
+        setError(e instanceof Error ? e.message : "unknown error");
+      })
+      .finally(() => {
+        setIsLoading(true);
+      });
+  }, []);
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <>
+      {isLoading ? (
+        <p>Loading..</p>
+      ) : (
+        <ul>
+          {posts.map((post: Posts) => (
+            <li key={post.id}>{post.title}</li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
+
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+fetch 에러는 크게 두 종류이다.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. 404 에러: api 자원이 없는 경우 즉 도메인은 존재하지만 도메인에 해당하는 api 자원이 없는 경우
+2. network 에러: 도메인 자체가 존재하지 않는 경우
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+404 에러의 경우엔 response에서 잡아야 한다.
+network 에러의 경우엔 catch문에 에러가 잡히게 된다.
 
-```
+## 2. 참고 파일
+
+- components/Fetch.tsx
