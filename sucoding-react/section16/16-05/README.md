@@ -1,75 +1,53 @@
-# React + TypeScript + Vite
+# 16-05. useFormStatus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [개념](#1-개념)
+2. [리액트 19](#2-리액트-19)
+3. [참고 파일](#3-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. 개념
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+컴포넌트가 분리되어 있는 상황에서도 상위 Form 요소의 상태 정보를 하위 컴포넌트에서도 가져올 수 있는 훅이다.
 
 ```
+const {pending, data, method, action} = useFormStatus()
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+pending: 폼이 제출되어 액션이 처리중(true, false)
+data: 제출된 폼 데이터 객체에 대한 참조값
+method: get 또는 post 중 현재 폼에서 사용중인 전송 방식을 나타냄
+action: 현재 실행중인 액션 함수에 대한 참조값
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 2. 예제
 
 ```
+import { useFormStatus } from "react-dom";
+
+type ButtonProps = React.ComponentPropsWithoutRef<"button">;
+
+export default function Button({ children, ...props }: ButtonProps) {
+  const { pending, data, method, action } = useFormStatus();
+  console.log("pending", pending);
+  console.log("data", data);
+  console.log("method", method);
+  console.log("action", action);
+  console.log("======");
+  return (
+    <>
+      <button {...props} disabled={pending}>
+        {children}
+      </button>
+      {data && <p>Logging in with ID: {String(data.get("email"))}</p>}
+    </>
+  );
+}
+```
+
+## 3. 참고 파일
+
+- components/html/Button.tsx
