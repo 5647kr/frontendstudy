@@ -1,75 +1,70 @@
-# React + TypeScript + Vite
+# 15-01. useTransition
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [개념](#1-json-server-활용)
+2. [참고 파일](#2-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. 개념
 
-## Expanding the ESLint configuration
+초기에는 상태 업데이트를 낮은 우선순위에 트랜지션으로 처리하는데 사용되었고
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+상태 업데이트를 낮은 우선 순위의 트랜지션(코드를 낮은 우선 순위(리액트가 더 중요한 작업이 끝나고 여유가 있을 때 처리함)로 처리한다)으로 처리 리액트 19부터는 비동기 함수도 처리할 수 있도록 기능이 확장
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+즉, 중요한 작업을 먼저 처리하고 여유가 있을 때 코드가 처리되게 할 수 있도록 처리함
 
 ```
+const [isPending, startTransition] = useTransition();
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+isPending: 실행중인 트랜지션이 있으면 true, 없으면 false
+startTransition: 코드를 트랜지션으로 실행(해당 함수로 작성한 코드는 React에서 낮은 우선순위로 처리한다)할 수 있게 해주는 함수
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 2. 예제
 
 ```
+import axios from "axios";
+import { useEffect, useState, useTransition } from "react";
+
+interface Post {
+  id: number;
+  title: string;
+  views: number;
+}
+
+export default function App() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    // react 19부터 async await 사용 가능
+    startTransition(async () => {
+      const { data } = await axios.get("http://localhost:3000/posts");
+
+      setPosts(data);
+    });
+  }, []);
+
+  if (isPending) return <p>Loading...</p>;
+  return (
+    <>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+별도의 isLoading 상태를 만들 필요 없이 isPending을 이용한다.
+isPending이 true라는 뜻은 무언가 데이터 패칭을 하고 있다는 의미이다.
+```
+
+## 2. 참고 파일
+
+- App.tsx
