@@ -1,6 +1,12 @@
 import axios from "axios";
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  startTransition,
+  useEffect,
+  useOptimistic,
+  useRef,
+  useState,
+} from "react";
 
 interface Posts {
   id: number;
@@ -8,17 +14,42 @@ interface Posts {
 }
 
 export default function App() {
+  const controller = useRef<AbortController | null>(null);
   const [posts, setPosts] = useState<Posts[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [optimisticPosts, addOptimisticPosts] = useOptimistic(
+    posts,
+    (statePosts, id) => {
+      return statePosts.map((statePost) =>
+        statePost.id === id
+          ? { ...statePost, isLike: !statePost.isLike }
+          : statePost,
+      );
+    },
+  );
   // 즉각적인 반응이 되지 않는다.
-  const updateLike = async (id: number, isLike: boolean) => {
-    const { data } = await axios.patch(`http://localhost:3000/posts/${id}`, {
-      isLike: !isLike,
+  const updateLike = (id: number, isLike: boolean) => {
+    controller.current?.abort();
+    controller.current = new AbortController();
+
+    startTransition(async () => {
+      addOptimisticPosts(id);
+      try {
+        const { data } = await axios.patch(
+          `http://localhost:3000/posts/${id}`,
+          {
+            isLike: !isLike,
+          },
+          { signal: controller.current?.signal },
+        );
+        setPosts((posts) =>
+          posts.map((post) => (post.id === data.id ? data : post)),
+        );
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     });
-    setPosts((posts) =>
-      posts.map((post) => (post.id === data.id ? data : post)),
-    );
-    console.log(data);
   };
   useEffect(() => {
     const fetchPosts = async () => {
@@ -38,11 +69,11 @@ export default function App() {
     <>
       {/* fill: 'none', stroke: 'currentColor' */}
       {/* fill: 'rgb(255,0,0)', stroke: 'rgb(255,0,0)' */}
-      {posts.map((post) => (
+      {optimisticPosts.map((post) => (
         <Heart
           key={post.id}
-          fill={post.isLike ? "rgb(255, 0, 0" : "none"}
-          stroke={post.isLike ? "rgb(255, 0, 0" : "currentColor"}
+          fill={post.isLike ? "rgb(255, 0, 0)" : "none"}
+          stroke={post.isLike ? "rgb(255, 0, 0)" : "currentColor"}
           onClick={() => updateLike(post.id, post.isLike)}
         />
       ))}
