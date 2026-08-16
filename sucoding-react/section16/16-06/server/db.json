@@ -1,0 +1,26 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "isLike": false
+    },
+    {
+      "id": 2,
+      "isLike": false
+    },
+    {
+      "id": 3,
+      "isLike": false
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "text": "comment #1"
+    },
+    {
+      "id": 2,
+      "text": "comment #2"
+    }
+  ]
+}
