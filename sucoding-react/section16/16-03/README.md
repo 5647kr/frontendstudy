@@ -1,75 +1,69 @@
-# React + TypeScript + Vite
+# 16-03. useActionState - 2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
 
-Currently, two official plugins are available:
+## 📑 목차
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. [개념](#1-개념)
+2. [예제](#2-예제)
+3. [참고 파일](#3-참고-파일)
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. 개념
 
-## Expanding the ESLint configuration
+formActionState hook의 첫 번째 매개변수로 작성하는 함수는 formAction이 발생했을 때 실행하는 함수
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+함수 자체는 formAction으로부터 전달되는 값들이 매개변수로 전달되게 된다.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+첫번째는 현재 상태 값 두번째는 form 자체의 데이터이다.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+이 데이터를 이용하면 비제어 컨트롤러 방식으로 폼 요소의 값을 가져올 수 있다.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
+```
+const [state, formAction, isPending] = useActionState(fn, initialState);
+
+폼의 액션 결과를 기반으로 상태를 업데이트할 수 있도록 도와주는 hook이다.
+
+fn: 액션이 발생했을 때 실행할 함수(비동기 함수도 가능)
+initialState: 상태의 초기값을 지정
+state: 현재 상태값
+formAction: 폼 액션 함수(action 속성에 활용)
+isPending: 액션이 처리중 여부(true, false)
+```
+
+## 2. 예제
+
+```
+import { useActionState } from "react";
+
+export default function App() {
+  const [count, formAction, isPending] = useActionState(
+    // 명시적으로 타입을 작성해줘야한다.
+    async (count: number, formData: FormData) => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // 기본적으로 문자열이기 때문에 숫자로 바꿔주어야 한다.
+      const amount = Number(formData.get("amount"));
+      return count + amount;
     },
-  },
-])
+    0,
+  );
+  return (
+    <>
+      <form action={formAction}>
+        <h1>count: {count}</h1>
+        <input type="text" name="amount" />
+        <button type="submit" disabled={isPending} formAction={formAction}>
+          증가
+        </button>
+        {isPending && <p>제출중...</p>}
+      </form>
+    </>
+  );
+}
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 3. 참고 파일
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- App.tsx
