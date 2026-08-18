@@ -1,75 +1,64 @@
-# React + TypeScript + Vite
+# 📌 [Zustand subscribeWithSelector]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **한 줄 요약**: `subscribeWithSelector`를 이용해 상태를 구독해 변경될때마다 특정 로직을 수행할 수 있다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💡 핵심 학습 내용 (Key Concepts)
 
-## React Compiler
+### 1. [개념]
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 특정 상태가 변경될 때를 감지해서 특정 로직을 수행할 수 있는 구독 기능을 제공하는 미들웨어
 
-## Expanding the ESLint configuration
+### 2. [subscribeWithSelector 적용하기]
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- persist 미들웨어를 감싸주면 된다.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```
+countStore.ts
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+export const useCountStore = create<CountStore>()(
+  subscribeWithSelector(
+    persist(
+      ...
+    ),
+  ),
+);
+```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
+### 3. [subscribeWithSelector 사용하기]
+
+- useEffect를 이용해 필요한 컴포넌트에 적용하면 된다.
+- 첫번째 매개변수는 state로 감시할 상태를 작성한다.
+- 두번째 매개변수는 state가 변경되었을 때 실행될 callback 함수를 적어준다.
+- 해당 callback 함수에는 변경된 최신 상태값이 들어오게 된다.
+
+```
+Count.tsx
+
+  useEffect(() => {
+    const unsubscribe = useCountStore.subscribe(
+      (state) => state.count,
+      (newCount) => {
+        console.log(newCount);
       },
-      // other options...
-    },
-  },
-])
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  return (
+    <>
+      <CountGroup />
+    </>
+  );
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📂 구현 코드 파일
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- 📄 [`countStore.ts`](./src/store/countStore.ts) - store 파일
+- 📄 [`Count.tsx`](./src/components/Count.tsx) - Count.tsx 파일
