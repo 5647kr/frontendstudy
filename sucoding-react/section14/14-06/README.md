@@ -1,75 +1,60 @@
-# React + TypeScript + Vite
+# 📌 [Zustand dentools]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **한 줄 요약**: `devtools`를 활용해 개발모드에서 도구를 사용할 수 있다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💡 핵심 학습 내용 (Key Concepts)
 
-## React Compiler
+### 1. [개념]
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 가벼운 전역상태 라이브러리기에 별도의 devtools를 제공 하지 않는다.
+- 원할 경우 Redux devtools와 연동할 수 있다.
 
-## Expanding the ESLint configuration
+### 2. [devtools 적용하기]
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- subscribeWithSelector를 포함하여 devtools로 감싸주면 된다.
 
 ```
+countStore.ts
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  devtools(
+    subscribeWithSelector(
+      persist(
+        immer((set) => ({
+          ...
+        })),
+      ),
+    )
+  ),
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 3. [devtools의 두번째 옵션]
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- 개발모드에서는 사용하고 배포후엔 없애고 싶을때 사용한다.
+- 2번째 옵션으로 객체를 생성한 뒤 enable 속성을 false로 지정한다.
+- 자동으로 true/false를 설정할 수 있다.
 
 ```
+countStore.ts
+
+  devtools(
+    subscribeWithSelector(
+      persist(
+        immer((set) => ({
+          ...
+        })),
+      ),
+    ),
+    {
+      enabled: false,
+      enabled: import.meta.env.MODE === "development"
+    },
+  ),
+```
+
+---
+
+## 📂 구현 코드 파일
+
+- 📄 [`countStore.ts`](./src/store/countStore.ts) - store 파일
