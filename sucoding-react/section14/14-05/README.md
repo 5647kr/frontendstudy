@@ -1,75 +1,58 @@
-# React + TypeScript + Vite
+# 📌 [Zustand immer]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **한 줄 요약**: `immer`를 이용해 쉽게 불변성을 지킬 수 있다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💡 핵심 학습 내용 (Key Concepts)
 
-## React Compiler
+### 1. [개념]
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- zustand의 상태 업데이트 함수에서는 불변성을 지켜줘야 한다는 규칙이 있다.
+- 이를 지키기 위해 상태 업데이트 함수를 사용할 때도 새로운 객체를 만들어 그 값을 반환하는 형태로 코드를 작성한다.
+- 이를 지키기 위해 매번 새로운 객체를 반환하는 방식은 가독성및 유지보수성이 떨어진다.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**핵심 요약**: 이를 해결하기 위해 `immer`라는 middelware를 제공한다.
 
 ```
+countStore.ts
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+set((state) => ({ count: state.count - 1 }))
+set((state) => ({ count: 0 }))
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 2. [immer 적용하기]
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- 사용자가 불변성을 고려하지 않아도 자동으로 불변성을 처리해 주는 middleware이다.
+- immer를 사용하기 위해 패키지를 설치해야한다.
+- subscribeWithSelector를 감싸는 것이 아닌 set 함수가 callback함수로 전달되는 함수 덩어리를 감싸주면 된다.
 
 ```
+countStore.ts
+
+export const useCountStore = create<CountStore>()(
+    persist(
+      immer((set) => ({
+        ...
+      }))
+    ),
+);
+```
+
+### 3. [immer 코드 변경]
+
+- 아래 예제 코드와 같이 수정이 가능하다.
+
+```
+countStore.ts
+
+set((state) => ({ state.count += amount + amount2 }))
+set((state) => ({ state.count -= 1 }))
+set((state) => ({ state.count = 0 }))
+```
+
+---
+
+## 📂 구현 코드 파일
+
+- 📄 [`countStore.ts`](./src/store/countStore.ts) - store 파일
