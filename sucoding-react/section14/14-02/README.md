@@ -1,75 +1,63 @@
-# React + TypeScript + Vite
+# 📌 [Zustand 매개변수]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **한 줄 요약**: 매개변수 전달 및 비동기 처리도 가능하다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💡 핵심 학습 내용 (Key Concepts)
 
-## React Compiler
+### 1. [매개변수 전달]
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 매개변수를 전달할 수 있다.
+- 전달하려는 매개변수의 개수는 정해져 있지 않다.
 
-## Expanding the ESLint configuration
+**핵심 요약**: 매개변수 전달 시, 타입 지정도 잊으면 안된다.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```
+CountButton.tsx
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<button onClick={() => increment(5, 10)}>증가</button>
+```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```
+countStore.ts
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+interface CountStore {
+  ...,
+  increment: (amount: number, amount2: number) => void;
+}
+
+export const useCountStore = create<CountStore>((set) => ({
+  increment: (amount: number, amount2: number) =>
+    set((state) => ({ count: state.count + amount + amount2 }));
+
+}));
 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. [비동기 처리]
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- zustand 내부에서 비동기처리도 가능하다.
+- async await 문을 사용하면 된다.
+- 함수를 객체형태로 묶어 사용하면 된다.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**핵심 요약**: async await 구문으로 비동기 처리도 가능하다.
 
 ```
+countStore.ts
+
+export const useCountStore = create<CountStore>((set) => ({
+  increment: async (amount: number, amount2: number) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    set((state) => ({ count: state.count + amount + amount2 }));
+  },
+  ...
+}));
+```
+
+---
+
+## 📂 구현 코드 파일
+
+- 📄 [`countStore.ts`](./src/store/countStore.ts) - store 파일
+- 📄 [`CountButton.tsx`](./src/components/CountButton.tsx) - count props 전달하기
