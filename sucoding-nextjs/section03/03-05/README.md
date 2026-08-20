@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [중첩 동적 라우트]
 
-## Getting Started
+> **한 줄 요약**: `devtools`를 활용해 개발모드에서 도구를 사용할 수 있다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 💡 핵심 학습 내용 (Key Concepts)
+
+### 1. [중첩 동적 라우트 정의 방식]
+
+- post/[id]/comment/[id] 와 같이 첫 번째 동적 라우트 아래 중첩하여 폴더를 작성하면 된다.
+
+### 2. [동적 라우드 주의 사항]
+
+- 같은 세그먼트로 시작하는 경로에서는 동적 세그먼트를 구분하는 폴더의 식별자가 똑같으면 안된다.
+- 즉 post/[id]/comment/[commentId]와 같이 대괄호 안 식별자가 달라야 한다.
+
+> **한 줄 요약**: `대괄호`를 이용해 동적 라우트를 정의한다.
+
+---
+
+### 3. [동적 세그먼트의 값 가져오기]
+
+- 동적 세그먼트의 값을 가져오는 것 역시 가능하다.
+- 하위 동적 세그먼트의 경우엔 상위 동적 세그먼트의 값까지 가져올 수 있다.
+
+> **한 줄 요약**: params라는 props를 사용해 세그먼트의 값을 가져온다.
+
+```
+app/post/[id]/comment/[commentId]/page.tsx
+
+export default async function CommentDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string; commentId: string }>;
+}) {
+  const { id, commentId } = await params;
+  return (
+    <>
+      <h1>CommentDetailPage: {id} / {commentId}</h1>
+    </>
+  );
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 클라이언트컴포넌트의 경우 useParams를 활용해 동적 세그먼트의 식별자를 작성해주면 된다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**한 줄 요약**: useParams를 활용해 동적 세그먼트의 값을 가져온다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/post/[id]/comment/[commentId]/page.tsx
 
-## Learn More
+"use client";
 
-To learn more about Next.js, take a look at the following resources:
+import { useParams } from "next/navigation";
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+export default function CommentDetailPage() {
+  const { id, commentId } = useParams();
+  return (
+    <>
+      <h1>CommentDetailPage: {id} / {commentId}</h1>
+    </>
+  );
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📂 구현 코드 파일
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📄 [`CommentDetailPage.tsx`](./src/app/post/[id]/comment/[commentId]/page.tsx) - post/[id]/comment/[commentId]/page.tsx
