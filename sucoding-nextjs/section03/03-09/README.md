@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [라우트 전환하기]
 
-## Getting Started
+> **한 줄 요약**: 폴더명 앞에 `_`를 붙여 일반폴더인 프라이빗 폴더로 만들 수 있다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 💡 핵심 학습 내용 (Key Concepts)
+
+### 1. [개념]
+
+- 라우트를 전환하는 방법으론 `Link` 컴포넌트를 사용한다.
+
+### 2. [Link 컴포넌트]
+
+- next/Link에서 Link 컴포넌트를 불러와 사용한다.
+- 브라우저 렌더링 시 a태그로 표기된다 하지만 a태그와 같은것은 아니다.
+
+- a태그로 라우트 전환 시 html, css, js에 대한 전체 리소스를 새로 다운로드 한다.
+- Link로 라우트 전환 시 변경된 부분만 업데이트하고 공유되는 부분은 그대로 유지된다.
+
+> **한 줄 요약**: `Link` 컴포넌트를 활용해 라우트를 전환하면 된다.
+
+```
+  <Link href="/about">About</Link>
+  <a href="/about">About</a>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📂 구현 코드 파일
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📄 [`page.tsx`](./src/app/page.tsx)
