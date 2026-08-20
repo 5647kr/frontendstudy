@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [라우트 그룹]
 
-## Getting Started
+> **한 줄 요약**: 폴더명 앞에 `_`를 붙여 일반폴더인 프라이빗 폴더로 만들 수 있다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 💡 핵심 학습 내용 (Key Concepts)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. [개념]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 관련된 라우트 세그먼트 폴더를 하나로 묶어 관리할 수 있는 라우트 그룹 기능을 제공한다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. [라우트 그룹 만들기]
 
-## Learn More
+- `소괄호`로 된 폴더를 만든 뒤 관련있는 라우트 세그먼트 폴더를 해당 폴더에 넣어준다.
+- 이는 경로를 구성하는 라우트 세그먼트 폴더로 취급되지 않고 단순히 폴더 구조를 정리하기 위한 논리적 그룹의 역할만 한다.
+- 라우트 그룹 또한 중첩하여 만들 수 있다.
 
-To learn more about Next.js, take a look at the following resources:
+> **한 줄 요약**: 폴더명을 `소괄호`로 감싼채로 작성한다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. [라우트 접근 방법]
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 기존 접근과 달라지는것은 없다
+- (auth)/login/page.tsx에 접근하기 위해 주소창에 `(auth)/login`으로 접근하는 것이 아닌 `/login`으로 똑같이 접근하면 된다.
 
-## Deploy on Vercel
+> **한 줄 요약**: 접근하는 방법은 달라지지 않는다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 구현 코드 파일
+
+- 📄 [`app`](./src/app/)
