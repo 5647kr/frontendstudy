@@ -10,6 +10,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  throw new Error("RootLayout Error");
   return (
     <html lang="ko">
       <body>{children}</body>
