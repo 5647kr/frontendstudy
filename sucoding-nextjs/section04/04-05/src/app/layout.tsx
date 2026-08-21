@@ -1,3 +1,4 @@
+import Search from "@/components/Search";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
