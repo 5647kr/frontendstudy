@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [not-found]
 
-## Getting Started
+> **한 줄 요약**: 최상위에 `not-found` 파일을 만들 수 있고 하위에 생성시 `notFound` 함수를 호출해 사용한다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 💡 핵심 학습 내용 (Key Concepts)
+
+### 1. [개념]
+
+App Router는 존재하지 않는 경로로 접근할 경우 자동으로 내장된 404 페이지를 렌더링하도록 기본 설정되어 있다.
+하지만 디자인이나 커스텀 404 페이지를 원할 땐 루트 경로 바로 밑에 not-found.tsx파일을 직접 생성해주면 된다.
+
+- not-found.tsx 파일은 App Router에서 404 페이지를 커스터마이징 할 때 사용하는 특수 파일이다.
+
+### 2. [not-found.tsx 생성]
+
+app 폴더 아래 `not-found.tsx` 파일을 생성하면 된다.
+
+- not-found.tsx 파일은 내장된 404 페이지를 대체하는 커스텀 404 페이지 역할을 한다.
+
+### 3. [하위 폴더에 추가]
+
+not-found.tsx 파일은 루트 경로 뿐 아닌 라우트 세그먼트 폴더나 루으트 그룹 폴더 하위에도 생성할 수 있다.
+
+```
+📦post
+ ┣ 📂[id]
+ ┃ ┗ 📜page.tsx
+ ┗ 📜not-found.tsx
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+위와 같이 폴더 구조를 형성하고 `post/1/comment`로 접속하면 post/not-found.tsx가 불러올거 같지만 root 경로에 있는 not-found.tsx가 보여지게 된다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+📦app
+ ┣ 📂post
+ ┣ 📜not-found.tsx <- 이게 보여짐
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. [하위 폴더에 있는 not-found 파일 사용하기]
 
-## Learn More
+컴포넌트 코드에서 notFound 함수를 호출하여 사용한다.
 
-To learn more about Next.js, take a look at the following resources:
+```
+post/[id]/page.tsx
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+import { notFound } from "next/navigation";
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+if (id === "10") notFound();
+```
 
-## Deploy on Vercel
+post/10이 없는 페이지라고 가정하고 notFound 함수를 호출하면 해당 컴포넌트로 부터 가장 가까이 있는 not-found.tsx 파일을 호출해 렌더링되게 된다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 구현 코드 파일
+
+- 📄 [`page.tsx`](./src/app/post/[id]/page.tsx)
