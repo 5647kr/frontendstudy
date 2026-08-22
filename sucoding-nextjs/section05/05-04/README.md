@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [메타 데이터 설정하기 4 (react19)]
 
-## Getting Started
+> **한 줄 요약**: 완전 독립적인 404 페이지를 만들고 싶을 때 `global-not-found.tsx`를 생성하고 `html, body`태그를 사용해 작성하면 된다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 💡 핵심 학습 내용 (Key Concepts)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. [개념]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+nextjs는 react 기반 프레임워크이기 떄문에 react에서 제공하는 문법과 기능을 그대로 사용할 수 있다.
+이에 react19에 새롭게 도입된 html 태그 기반 메타 데이터 설정 방식도 사용할 수 있다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 2. [적용 방법]
 
-## Learn More
+페이지 컴포넌트에 `title 태그`를 사용할 수 있다. 이는 `meta 태그, Link 태그` 역시 가능하다.
+이를 활용한 것이 바로 `global-not-found` 나 `global-error` 컴포넌트이다.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📂 구현 코드 파일
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📄 [`page.tsx`](./src/app/page.tsx)
