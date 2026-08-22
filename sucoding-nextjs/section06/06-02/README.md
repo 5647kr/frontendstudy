@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [서버 컴포넌트에서 데이터 패치 - 로딩 처리]
 
-## Getting Started
+> **한 줄 요약**: 데이터 패칭을 한다고 무조건 `loading.tsx`를 사용하는 것 은 좋지 않다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 💡 핵심 학습 내용 (Key Concepts)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. [개념]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+서버 컴포넌트에서 데이터 패칭 시 서버에서 데이터를 패칭해 html을 만들어 브라우저로 보낸다. 이때 데이터 패칭에 오랜 시간이 걸리게 될 경우 사용자는 빈 화면만 보게 된다. 이때 사용하는 것이 바로 loading.tsx이다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. [loading.tsx 사용하기]
 
-## Learn More
+app 폴더 최상위에 `loading.tsx`를 만들면 된다.
+단, 서버 컴포넌트에서 발생하는 지연만 처리할 수 있다.
 
-To learn more about Next.js, take a look at the following resources:
+- 클라이언트 컴포넌트 내 `useEffect`를 이용한 `fetch`
+- 클라이언트 컴포넌트 내 TanStack Query 사용
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+과 같은 경우엔 loading.tsx 가 처리하지 못한다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+또한 빠른 로딩이 가능한 페이지의 경우엔 오히려 loadingUI가 보이게 된다.
+따라서 빠른 로딩이 가능한 페이지의 경우엔 loading.tsx는 사용하지 않는 것이 좋다.
 
-## Deploy on Vercel
+## 📂 구현 코드 파일
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📄 [`page.tsx`](./src/app/page.tsx)
