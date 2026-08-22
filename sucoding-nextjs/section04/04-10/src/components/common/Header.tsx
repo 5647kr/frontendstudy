@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 
 export default function Header() {
+  throw new Error("Failed to Header");
   return (
     <header className="w-full bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
