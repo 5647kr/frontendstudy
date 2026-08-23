@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [클라이언트 컴포넌트에서 데이터 패칭]
 
-## Getting Started
+> **한 줄 요약**: React에서 하던 것 처럼 `useEffect`훅을 사용하면 된다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 💡 핵심 학습 내용 (Key Concepts)
+
+### 1. [개념]
+
+클라이언트 컴포넌트에서 데이터 패칭 시 React 하던 것과 다르지 않다.
+컴포넌트가 마운트 된 이후에 네트워크 요청을 보내야 하므로 `useEffect`를 사용해 side effect를 실행하는 패턴을 사용한다.
+
+```
+  useEffect(() => {
+    const getPost = async () => {
+      ...
+    };
+    getPost();
+  }, []);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. [동작 방식]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+페이지 자체는 서버에서 이미 렌더링되어 전달되기 떄문에 브라우저는 경로에 즉시 진입할 수 있고, 화면도 바로 렌더링이 되지만 데이터 패칭은 브라우저에서 별도로 진행하기 때문에 지연시간이 끝날 때까지의 데이터가 비어 있다가 일정 시간 지난 후에 채워지는 형태가 된다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+즉, 경로에는 접근조차 안된다는 느낌이였던 서버 컴포넌트와 비교하면 클라이언트 컴포넌트는 일단 화면이 뜨고 데이터만 늦게 들어오는 패턴으로 동작한다.
 
-## Learn More
+### 3. [loading UI]
 
-To learn more about Next.js, take a look at the following resources:
+클라이언트 컴포넌트의 경우엔 `loading.tsx`의 대상이 되지 않는다. 따라서 로딩 상태를 따로 정의해주어야 한다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(false);
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📂 구현 코드 파일
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📄 [`page.tsx`](./src/app/page.tsx)
