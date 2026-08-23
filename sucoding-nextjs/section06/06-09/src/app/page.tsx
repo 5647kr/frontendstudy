@@ -1,4 +1,8 @@
+import PostError from "@/components/posts/PostError";
 import PostList from "@/components/posts/PostList";
+import PostSkeleton from "@/components/posts/PostSkeleton";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function Home() {
   return (
@@ -15,7 +19,11 @@ export default function Home() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-12">
-        <PostList />
+        <ErrorBoundary fallback={<PostError />}>
+          <Suspense fallback={<PostSkeleton />}>
+            <PostList />
+          </Suspense>
+        </ErrorBoundary>
       </main>
 
       <footer className="border-t border-gray-200 mt-24">
