@@ -33,7 +33,7 @@ export function PostCard({ post }: { post: Post }) {
       </div>
 
       <div className="border-t border-gray-200 bg-gray-50">
-        <CommentSection />
+        <CommentSection postId={post.id} />
       </div>
     </article>
   );
