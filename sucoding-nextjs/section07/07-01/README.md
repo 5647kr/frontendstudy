@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [CSR]
 
-## Getting Started
+> **한 줄 요약**: CSR의 이론
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 💡 핵심 학습 내용 (Key Concepts)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. [개념]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+최초의 리액트 앱은 클라이언트로 웹 브라우저에서 렌더링 했다. 이를 `Client Side Rendering(CSR)`이라 부른다.
+CSR은 Single Page Application 방식의 핵심 기술이다 SPA는 하나의 HTML 페이지만 로드하고 이후에는 JS로 화면을 동적으로 변경하며 작동하는 애플리케이션을 말한다. 전통적으로 페이지를 이동할때마다 새로운 HTML을 받아오는 것이 아닌 한 번 로드된 페이지 안에서 모든 것이 처리되는 방식이다
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. [동작 방식]
 
-## Learn More
+1. 사용자가 웹사이트에 접속하면 클라이언트는 CDN에 GET 요청을 보낸다.
+2. CDN은 사용자에게 빈 HTML파일과 CSS, JS번들 파일을 반환한다.
+3. 주로 로딩 스피너만 보이는 상태이다.
+4. 다운받은 JS번들이 브라우저에서 실행을 시작한다.
+5. JS 가 실행되면 API 서버로 데이터를 요청하게 된다.
+6. API 서버는 데이터를 반환한다.
+7. React는 받은 데이터를 가지고 화면을 렌더링 한다.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+이에 초기 로딩이 느리고, 검색 엔진이 콘텐츠를 제대로 인식하지 못하는 SEO 문제 발생 가능성이 있다.
+하지만 한 번 로딩이 완료되면 이후 페이지 전환은 매우 빠르고 부드럽다는 장점을 가지고 있다.
