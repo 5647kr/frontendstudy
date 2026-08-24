@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [CSR 렌더링 확인하기(흔한 실수)]
 
-## Getting Started
+> **한 줄 요약**: RSC 이론 - 2
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 💡 핵심 학습 내용 (Key Concepts)
+
+### 1. [문제점]
+
+`npm run dev`로 실행한 경우
+
+```
+<h1>TimePage: {date.toLocaleTimeString()}</h1>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+위 코드를 실행하면 잘 작동한다. 하지만 build 이후 실행해도 build시점을 기준으로 데이터가 고정된다. 이는 build 결과가 static이기 때문이다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ○ /time
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+○  (Static)  prerendered as static content
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. [배포환경에서도 동작하는 방법1]
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Static으로 빌드된 결과를 Dynamic 빌드가 되도록 변경해주어야 한다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+해당 컴포넌트를 dynamic 변수에 force-dynamic 값을 할당해 export 하면 된다.
 
-## Deploy on Vercel
+```
+export const dynamic = "force-dynamic";
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+위와 같이 작성할 경우 빌드 결과가 아래처럼 바뀌게 된다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ƒ /time
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+```
+
+### 3. [배포환경에서도 동작하는 방법2]
+
+클라이언트 컴포넌트를 만들어 CSR 렌더링에 적용되게 한다.
+build 결과 static으로 결정되어도 실시간으로 렌더링 된다.
