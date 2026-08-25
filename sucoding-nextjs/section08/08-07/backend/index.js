@@ -7,9 +7,9 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
-// 10 ~ 200 (10 단위)
+// 10 ~ 2000 (10 단위)
 function getRandomByTen() {
-  return (Math.floor(Math.random() * 20) + 1) * 10;
+  return (Math.floor(Math.random() * 200) + 1) * 10;
 }
 
 app.get("/random1", (req, res) => {
