@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import RevalidateBtn from "./components/RevalidateBtn";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,7 +14,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <div>
+          <Link href={"/"}>Home</Link>
+          <Link href={"/about"}>About</Link>
+        </div>
+        <RevalidateBtn />
+        <div>{children}</div>
+      </body>
     </html>
   );
 }
