@@ -1,13 +1,17 @@
+export async function generateMeatadata() {
+  const res = await fetch("http://localhost:4000/random1");
+  const randomNumber = await res.json();
+  return {
+    title: `${randomNumber}`,
+  };
+}
+
 export default async function Home() {
-  const res = await fetch("http://localhost:4000/random1", {
-    cache: "force-cache",
-  });
+  const res = await fetch("http://localhost:4000/random1");
 
   const randomNumber = await res.json();
 
-  const res2 = await fetch("http://localhost:4000/random1", {
-    cache: "force-cache",
-  });
+  const res2 = await fetch("http://localhost:4000/random1");
 
   const randomNumber2 = await res2.json();
   return (
