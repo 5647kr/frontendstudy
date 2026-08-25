@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📌 [데이터 캐시 - 2 (구현)]
 
-## Getting Started
+> **한 줄 요약**: 캐싱 전략의 4가지
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 💡 핵심 학습 내용 (Key Concepts)
+
+### 1. [환경 구축]
+
+backend 폴더에서 npm install && npm run dev명령어로 서버를 실행한 뒤 frontend 폴더도 npm install && npm run dev 명령어로 실행한다.
+
+이후 fetch API 옵션으로 no-store를 명시적으로 작성한다. 그럼 새로고침을 해도 매번 새로운 값이 반환되는 것을 볼 수 있다.
+
+```
+fetch("http://localhost:4000/random1", {
+    cache: "no-store",
+  });
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+이는 매번 Data Source에서 데이터를 매번 가져오게 된다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. [force-cache 적용]
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+이번엔 데이터 캐시를 사용하게 되면 첫 요청은 Data Source에서 데이터를 가져온 뒤 다음부터는 Data Cache에서 이미 캐시된 데이터를 가져와 보여주게 된다.
 
-## Learn More
+```
+fetch("http://localhost:4000/random1", {
+    cache: "force-cache",
+  });
+```
 
-To learn more about Next.js, take a look at the following resources:
+따라서 새로고침을 해도 데이터가 변하지 않는다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. [데이터 캐시의 특징]
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 데이터 캐시는 데이지 단위가 아닌 API 요청 단위로 저장된다.
+  about/page.tsx에서 같은 코드를 작성해서 about경로로 접속해보면 루트페이지의 데이터가 그대로 보이는 것을 볼 수 있다.
 
-## Deploy on Vercel
+- 데이터 캐시의 저장 기간은 영속적이다. 따라서 따로 삭제를 해야한다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 구현 코드 파일
+
+- 📄 [`page.tsx`](./src/app/page.tsx)
+- 📄 [`about.tsx`](./src/app/about/page.tsx)
