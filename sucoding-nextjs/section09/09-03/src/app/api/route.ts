@@ -1,11 +1,8 @@
-// 이 파일 안에서 HTTP 메소드를 그대로 함수 이름으로 정의하면 된다.
+// 동적 라우트를 정의하고 동적 세그먼트를 활용할 수 있다.
 
 import { NextRequest, NextResponse } from "next/server";
 
-// 쿼리 스트링을 받을 땐 request라는 매개변수를 받으면 된다.
-// 쿼리 스트링은 GET방식 아닌 나머지 방식에서도 사용 가능하지만 대부분 GET방식에서만 사용한다.
 export async function GET(request: NextRequest) {
-  // page의 쿼리 스트링의 값을 가져온다.
   const page = request.nextUrl.searchParams.get("_page");
   const limit = request.nextUrl.searchParams.get("_limit");
 
