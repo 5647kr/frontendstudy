@@ -7,10 +7,14 @@ export default function Navigation({ url }: { url: string }) {
   const router = useRouter();
   return (
     <>
-      <p>
+      {/* <p>
         <Link href={url}>이동({url})</Link>
-      </p>
-      {/* <button onClick={() => router.push(url)}>이동({url})</button> */}
+      </p> */}
+      <button
+        onMouseEnter={() => router.prefetch(url)}
+        onClick={() => router.push(url)}>
+        이동({url})
+      </button>
     </>
   );
 }
