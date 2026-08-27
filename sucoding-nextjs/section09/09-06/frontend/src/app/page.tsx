@@ -9,7 +9,7 @@ export default function Page() {
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("http://localhost:4000/posts");
+        const res = await fetch("http://localhost:3000/api/posts");
         const posts = await res.json();
         setPosts(posts);
       } catch (e) {
@@ -22,10 +22,6 @@ export default function Page() {
     fetchPosts();
   }, []);
 
-  if (isLoading) return <p>Loading...</p>;
-  return (
-    <>
-      <pre>{JSON.stringify(posts, null, 2)}</pre>
-    </>
-  );
+  // if (isLoading) return <p>Loading...</p>;
+  return <>{posts.length > 0 && <pre>{JSON.stringify(posts, null, 2)}</pre>}</>;
 }
