@@ -1,13 +1,38 @@
 "use client";
 
+import { searchMember } from "@/api/api";
+import { cacheRemove } from "@/services/action";
 import { Search } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function TeamMember({
   teamMembers,
 }: {
   teamMembers: TeamMember[];
 }) {
+  const [search, setSearch] = useState("");
+  const [members, setMembers] = useState(teamMembers);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const loadingTime = setTimeout(() => {
+      setIsLoading(true);
+    }, 100);
+
+    try {
+      const { data } = await searchMember(search);
+      console.log(data);
+      setMembers(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+      clearTimeout(loadingTime);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white rounded-lg shadow-sm border border-gray-200 p-8">
@@ -23,47 +48,50 @@ export default function TeamMember({
 
         <div className="mb-6">
           <div className="relative">
-            <form>
+            <form onSubmit={handleSubmit}>
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search"
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={(e) => setSearch(e.target.value)}
               />
             </form>
           </div>
         </div>
 
         {/* 로딩 */}
-        {/* <p className="text-sm text-gray-500 mb-4">Searching...</p> */}
+        {isLoading && (
+          <p className="text-sm text-gray-500 mb-4">Searching...</p>
+        )}
 
         <div className="space-y-1 mb-8">
-          {teamMembers.map((member) => (
-            <button
-              key={member.id}
-              className={`w-full flex items-center gap-3 p-3 rounded-md transition-colors text-left hover:bg-gray-50`}
-            >
-              <Image
-                src={member.avatar}
-                alt={member.name}
-                className="w-10 h-10 rounded-full object-cover shrink-0"
-                width={40}
-                height={40}
-              />
-              <div className="flex-1 min-w-0">
-                <div className="font-medium text-gray-900 text-sm">
-                  {member.name}
+          {!isLoading &&
+            members.map((member) => (
+              <button
+                key={member.id}
+                className={`w-full flex items-center gap-3 p-3 rounded-md transition-colors text-left hover:bg-gray-50`}>
+                <Image
+                  src={member.avatar}
+                  alt={member.name}
+                  className="w-10 h-10 rounded-full object-cover shrink-0"
+                  width={40}
+                  height={40}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-gray-900 text-sm">
+                    {member.name}
+                  </div>
+                  <div className="text-xs text-gray-500 truncate">
+                    {member.email} · {member.lastOnline}
+                  </div>
                 </div>
-                <div className="text-xs text-gray-500 truncate">
-                  {member.email} · {member.lastOnline}
-                </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            ))}
         </div>
         <button
-          className={`w-full py-2.5 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700`}
-        >
+          onClick={cacheRemove}
+          className={`w-full py-2.5 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700`}>
           Purge Member Cache
         </button>
       </div>
