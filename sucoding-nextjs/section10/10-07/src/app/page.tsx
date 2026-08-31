@@ -1,9 +1,9 @@
-import { doldam, nanumBrush, rubikStorm } from "@/libs/font";
+import { doldam, nanumBrush } from "@/libs/font";
 
 export default function Home() {
   return (
     <>
-      <h1 className={rubikStorm.className}>
+      <h1 className="font-rubik">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem,
         ullam. Temporibus quas, dignissimos voluptatem maiores iure dolore
         debitis id. Vel facilis velit rerum? Numquam fugit perspiciatis officia

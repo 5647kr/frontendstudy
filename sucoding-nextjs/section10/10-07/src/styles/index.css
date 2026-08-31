@@ -4,3 +4,8 @@
   font-weight: 400;
   font-style: normal;
 }  */
+
+@import "tailwindcss";
+@theme inline {
+  --font-rubik: var(--font-rubik);
+}

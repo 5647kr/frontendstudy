@@ -17,6 +17,7 @@ export const doldam = localFont({
 export const rubikStorm = Rubik_Storm({
   subsets: ["latin"],
   weight: "400",
+  variable: "--font-rubik",
 });
 export const nanumBrush = Nanum_Brush_Script({
   subsets: ["latin"],
