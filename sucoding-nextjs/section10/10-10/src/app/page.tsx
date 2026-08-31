@@ -87,17 +87,21 @@ export default function Home() {
               {blogPostData.date} • {blogPostData.readTime}
             </div>
 
-            {/* <Image
+            <Image
               className="w-full h-auto rounded-[5px] object-cover"
               alt="Post thumbnail"
               src={blogPostData.thumbnailUrl}
+              // style의 width와 height와는 다르다
               width={772}
               height={514}
               loading="eager"
               preload={true}
-            /> */}
-            
-            <Image
+              // sizes: 화면 크기별로 실제 필요한 픽셀을 알려주는 역할을 한다.
+              // sizes="(max-width: 748px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 804px) calc(100vw - 32vw), 772px"
+            />
+
+            {/* <Image
               className="w-full h-auto rounded-[5px] object-cover"
               alt="Post thumbnail"
               src="https://cdn.pixabay.com/photo/2012/10/26/01/35/aircraft-63032_1280.jpg"
@@ -105,7 +109,7 @@ export default function Home() {
               height={514}
               loading="eager"
               preload={true}
-            />
+            /> */}
 
             <div className="flex items-center gap-3.5">
               <div className="w-10.5 h-10.5 rounded-full overflow-hidden relative">
