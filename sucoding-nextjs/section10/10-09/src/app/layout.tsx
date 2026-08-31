@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import { merriweather, roboto } from "../libs/font";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body>{children}</body>
+    <html lang="ko" className={`${merriweather.variable} ${roboto.variable}`}>
+      <body className="font-merriweather">{children}</body>
     </html>
   );
 }

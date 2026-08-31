@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const navigationItems = [
@@ -63,8 +64,7 @@ export default function Home() {
               <Link
                 key={index}
                 href={item.href}
-                className="text-[#5f5b58] text-lg tracking-[0] leading-normal whitespace-nowrap hover:text-[#000538]"
-              >
+                className="text-[#5f5b58] text-lg tracking-[0] leading-normal whitespace-nowrap hover:text-[#000538]">
                 {item.label}
               </Link>
             ))}
@@ -87,15 +87,31 @@ export default function Home() {
               {blogPostData.date} • {blogPostData.readTime}
             </div>
 
-            <img
+            {/* <Image
               className="w-full h-auto rounded-[5px] object-cover"
               alt="Post thumbnail"
               src={blogPostData.thumbnailUrl}
+              width={772}
+              height={514}
+              loading="eager"
+              preload={true}
+            /> */}
+            
+            <Image
+              className="w-full h-auto rounded-[5px] object-cover"
+              alt="Post thumbnail"
+              src="https://cdn.pixabay.com/photo/2012/10/26/01/35/aircraft-63032_1280.jpg"
+              width={772}
+              height={514}
+              loading="eager"
+              preload={true}
             />
 
             <div className="flex items-center gap-3.5">
               <div className="w-10.5 h-10.5 rounded-full overflow-hidden relative">
-                <img
+                <Image
+                  width={42}
+                  height={42}
                   src={blogPostData.author.avatarUrl}
                   alt={blogPostData.author.name}
                   className="w-full h-full object-cover"
@@ -109,7 +125,7 @@ export default function Home() {
           </header>
         </article>
 
-        <article className="flex flex-col max-w-200 mx-auto px-4 mt-7.5">
+        <article className="font-roboto flex flex-col max-w-200 mx-auto px-4 mt-7.5">
           <p className="font-medium text-[#424242] text-[20px] md:text-[26px] tracking-[0] md:leading-[41.6px]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultrices
             dui diam arcu pharetra at laoreet pellentesque. Imperdiet sit ut
@@ -134,12 +150,10 @@ export default function Home() {
                 {tableOfContents.map((item) => (
                   <li
                     key={item.number}
-                    className="font-normal text-[#2f2f2f] text-lg tracking-[0] md:leading-[28.8px]"
-                  >
+                    className="font-normal text-[#2f2f2f] text-lg tracking-[0] md:leading-[28.8px]">
                     <a
                       href={`#section-${item.number}`}
-                      className="hover:opacity-80"
-                    >
+                      className="hover:opacity-80">
                       <span>{item.number}. </span>
                       <span className="underline">{item.text}</span>
                     </a>
@@ -165,8 +179,7 @@ export default function Home() {
               {section.paragraphs.map((paragraph, paragraphIndex) => (
                 <p
                   key={paragraphIndex}
-                  className="mt-5 font-normal text-[#424242] text-lg md:text-xl tracking-[0] md:leading-8"
-                >
+                  className="mt-5 font-normal text-[#424242] text-lg md:text-xl tracking-[0] md:leading-8">
                   {paragraph}
                 </p>
               ))}
@@ -177,7 +190,9 @@ export default function Home() {
         <div className="w-full max-w-200 mx-auto mt-12 bg-neutral-100 border border-[#dddddd] rounded-lg p-8">
           <div className="flex gap-7">
             <div className="w-37.5 h-37.5 shrink-0 rounded-full overflow-hidden relative">
-              <img
+              <Image
+                width={150}
+                height={150}
                 src="/image-3-1.png"
                 alt="George Costanza"
                 className="w-full h-full object-cover"
@@ -189,7 +204,7 @@ export default function Home() {
                 Written by George Costanza
               </h3>
 
-              <p className="font-normal text-black text-base md:text-lg tracking-[0] md:leading-[28.8px]">
+              <p className="font-roboto font-normal text-black text-base md:text-lg tracking-[0] md:leading-[28.8px]">
                 Volutpat cursus id id tincidunt duis id. Urna curabitur ultrices
                 molestie bibendum. Purus orci nisl, commodo ipsum, ut urna,
                 elementum. Nunc potenti lectus in erat ligula cras. Eget.
