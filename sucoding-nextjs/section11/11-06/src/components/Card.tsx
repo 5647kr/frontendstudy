@@ -1,55 +1,24 @@
 "use client";
+import { useIsMounted } from "@/hook/useIsMounted";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-type Theme = "light" | "dark" | "system";
-
-// 사용자 os 환경을 검색해서 기본 테마를 반환하는 함수
-function getSystemTheme() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
-function applyTheme(theme: string) {
-  const root = document.documentElement;
-
-  root.classList.remove("light", "dark");
-  const resolved = theme === "system" ? getSystemTheme() : theme;
-
-  root.classList.add(resolved);
-}
-
 export default function Card() {
-  const [theme, setTheme] = useState<Theme>("system");
-
-  useEffect(() => {
-    const saved = (localStorage.getItem("theme") as Theme) ?? getSystemTheme();
-
-    window.setTimeout(() => setTheme(saved), 0);
-
-    applyTheme(saved);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-
-    applyTheme(theme);
-  }, [theme]);
+  const { setTheme, resolvedTheme } = useTheme();
+  const mounted = useIsMounted();
   return (
     <article className="flex items-center justify-center min-h-screen">
       <div className="w-100 bg-white dark:bg-gray-800 rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5">
         <div>
           {/* 아이콘 클릭 시 라이트모드 <-> 다크모드 전환 */}
-          <span className="inline-flex items-center justify-center rounded-md bg-indigo-500 p-2 shadow-lg">
-            <svg
-              onClick={() =>
-                setTheme((theme) =>
-                  theme === "system" || theme === "dark" ? "light" : "dark",
-                )
-              }
-              className="h-6 w-6 stroke-white text-white cursor-pointer">
-              {theme === "dark" ? <Moon /> : <Sun />}
+          <span
+            onClick={() =>
+              setTheme(() => (resolvedTheme === "dark" ? "light" : "dark"))
+            }
+            className="inline-flex items-center justify-center rounded-md bg-indigo-500 p-2 shadow-lg">
+            <svg className="h-6 w-6 stroke-white text-white cursor-pointer">
+              {mounted && resolvedTheme === "dark" ? <Moon /> : <Sun />}
             </svg>
           </span>
         </div>
