@@ -1,7 +1,11 @@
+import Count from "@/components/Count";
+import CountOutside from "@/components/CountOutside";
+
 export default function Page() {
   return (
     <>
-      <h1>Page</h1>
+      <Count />
+      <CountOutside />
     </>
   );
 }

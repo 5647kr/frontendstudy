@@ -1,3 +1,4 @@
+import CountProvider from "@/provider/CountProvider";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <CountProvider>{children}</CountProvider>
+      </body>
     </html>
   );
 }
