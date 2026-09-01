@@ -1,7 +1,7 @@
 export default function CountDisplay({ count }: { count: number }) {
   return (
     <>
-      <h1>Count: 0</h1>
+      <h1>Count: {count}</h1>
     </>
   );
 }
