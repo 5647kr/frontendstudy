@@ -1,7 +1,15 @@
+"use client";
+
+import Count from "@/components/Count";
+import CountOutside from "@/components/CountOutside";
+import { useState } from "react";
+
 export default function Page() {
+  const [count, setCount] = useState(0);
   return (
     <>
-      <h1>Page</h1>
+      <Count count={count} setCount={setCount} />
+      <CountOutside count={count} />
     </>
   );
 }
