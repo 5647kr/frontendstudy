@@ -34,11 +34,13 @@ export default function MovieSection({
             {title}
           </h2>
         </div>
-        <Link
-          href={moreUrl}
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          더보기
-        </Link>
+        {moreUrl && (
+          <Link
+            href={moreUrl}
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            더보기
+          </Link>
+        )}
       </div>
       <Swiper
         modules={[Navigation, FreeMode]}

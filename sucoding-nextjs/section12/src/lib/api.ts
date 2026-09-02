@@ -1,3 +1,5 @@
+import { pickMainVideo } from "./utils";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const options = {
@@ -9,7 +11,6 @@ const options = {
 };
 
 // 영화 정보 불러오기
-
 export async function getMoviesData(category: string, page = "1") {
   try {
     const res = await fetch(
@@ -29,5 +30,88 @@ export async function getMoviesData(category: string, page = "1") {
   } catch (error) {
     console.error(error);
     throw new Error("영화 정보를 불러오지 못했습니다.");
+  }
+}
+
+// 영화 상세 정보 불러오기
+export async function getMovieDetailData(id: string): Promise<Movie> {
+  try {
+    const res = await fetch(`${API_URL}/movie/${id}?language=ko-kr`, {
+      ...options,
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `TMDB API 요청 실패 (상태코드: ${res.status}) ${res.statusText} - 영화 상세 정보 조회`,
+      );
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error("영화 상세 정보를 불러오지 못했습니다.");
+  }
+}
+
+// 영화 트레일러 api
+export async function getMovieVideoData(id: string) {
+  try {
+    const res = await fetch(`${API_URL}/movie/${id}/videos`, {
+      ...options,
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `TMDB API 요청 실패 (상태코드: ${res.status}) ${res.statusText} - 영화 비디오 정보 조회`,
+      );
+    }
+
+    const result = await res.json();
+    return pickMainVideo(result.results);
+  } catch (error) {
+    console.error(error);
+    throw new Error("영화 비디오 정보를 불러오지 못했습니다.");
+  }
+}
+
+// 영화 출연자 및 스태프 api
+export async function getMovieCreditData(id: string): Promise<MovieCredits> {
+  try {
+    const res = await fetch(`${API_URL}/movie/${id}/credits`, {
+      ...options,
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `TMDB API 요청 실패 (상태코드: ${res.status}) ${res.statusText} - 영화 출연자 및 스태프 정보 조회`,
+      );
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error("영화 출연자 및 스태프 정보를 불러오지 못했습니다.");
+  }
+}
+
+// 관련 있는 영화 api
+export async function getSimilarMovies(id: string) {
+  try {
+    const res = await fetch(`${API_URL}/movie/${id}/similar`, {
+      ...options,
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `TMDB API 요청 실패 (상태코드: ${res.status}) ${res.statusText} - 관련 있는 영화 정보 조회`,
+      );
+    }
+
+    const result = await res.json();
+
+    return result.results;
+  } catch (error) {
+    console.error(error);
+    throw new Error("관련 있는 영화 정보를 불러오지 못했습니다.");
   }
 }
