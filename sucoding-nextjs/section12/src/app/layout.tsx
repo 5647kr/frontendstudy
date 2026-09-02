@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Header from "@/components/main/Header";
 import "@/styles/globals.css";
+import NextThemeProvider from "@/provider/NextThemeProvider";
 
 export const metadata: Metadata = {
   title: "Wave - 영화 스트리밍",
@@ -23,10 +24,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="dark">
+    <html lang="ko" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <Header />
-        <main>{children}</main>
+        <NextThemeProvider
+          attribute={"class"}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+          <Header />
+          <main>{children}</main>
+        </NextThemeProvider>
       </body>
     </html>
   );
