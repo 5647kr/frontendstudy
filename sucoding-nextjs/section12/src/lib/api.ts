@@ -11,7 +11,10 @@ const options = {
 };
 
 // 영화 정보 불러오기
-export async function getMoviesData(category: string, page = "1") {
+export async function getMoviesData(
+  category: string,
+  page = 1,
+): Promise<TMDBListResponse> {
   try {
     const res = await fetch(
       `${API_URL}/movie/${category}?language=ko-kr&page=${page}`,
@@ -113,5 +116,33 @@ export async function getSimilarMovies(id: string) {
   } catch (error) {
     console.error(error);
     throw new Error("관련 있는 영화 정보를 불러오지 못했습니다.");
+  }
+}
+
+// 영화 검색 api
+export async function getMovieMoreData(
+  keyword: string,
+  page = 1,
+): Promise<TMDBListResponse> {
+  try {
+    const res = await fetch(
+      `${API_URL}/search/movie?language=ko-KR&query=${encodeURIComponent(keyword)}&page=${page}`,
+      {
+        ...options,
+      },
+    );
+
+    if (!res.ok) {
+      throw new Error(
+        `TMDB API 요청 실패 (상태코드: ${res.status}) ${res.statusText} - 검색 영화 정보 조회`,
+      );
+    }
+
+    const result = await res.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error("검색 영화 정보를 불러오지 못했습니다.");
   }
 }

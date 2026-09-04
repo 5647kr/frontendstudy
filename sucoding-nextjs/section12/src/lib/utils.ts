@@ -21,3 +21,9 @@ export function pickMainVideo(videos: TMDBVideo[]) {
     null
   );
 }
+
+export function categoryName(category: string) {
+  if (category === "upcoming") return "개봉예정";
+  else if (category === "popular") return "인기작";
+  if (category === "now_playing") return "상영중";
+}

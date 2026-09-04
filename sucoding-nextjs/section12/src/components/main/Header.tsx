@@ -4,6 +4,8 @@ import useIsMounted from "@/hook/useIsMounted";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { Suspense } from "react";
+import HeaderSearch from "./HeaderSearch";
 
 export default function Header() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -20,17 +22,17 @@ export default function Header() {
             </Link>
             <nav className="hidden md:flex items-center gap-6">
               <Link
-                href="/?category=now_playing"
+                href="/search?category=now_playing"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 상영중
               </Link>
               <Link
-                href="/?category=popular"
+                href="/search?category=popular"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 인기작
               </Link>
               <Link
-                href="/?category=upcoming"
+                href="/search?category=upcoming"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 개봉예정
               </Link>
@@ -38,18 +40,9 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-4">
-            <form className="relative">
-              <input
-                type="text"
-                placeholder="제목으로 찾아보세요.."
-                className="w-48 sm:w-64 px-4 py-2 pr-16 text-sm bg-secondary text-foreground placeholder:text-muted-foreground rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              <button
-                type="submit"
-                className="absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1 text-sm font-medium bg-foreground text-background rounded hover:opacity-90 transition-opacity">
-                search
-              </button>
-            </form>
+            <Suspense>
+              <HeaderSearch />
+            </Suspense>
 
             <button
               className="w-10 h-10 p-2 rounded-md hover:bg-secondary transition-colors"
