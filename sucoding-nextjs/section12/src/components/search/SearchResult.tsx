@@ -1,7 +1,7 @@
 import Link from "next/link";
-import MovieCard from "../movies/MovieCard";
 import { getMovieMoreData, getMoviesData } from "@/lib/api";
 import { categoryName } from "@/lib/utils";
+import SearchClient from "./SearchClient";
 
 export default async function SearchResults({
   keyword,
@@ -19,7 +19,7 @@ export default async function SearchResults({
     data = await getMoviesData(category, 1);
   }
 
-  const movies = data?.results;
+  const movies = data?.results ?? [];
   const totalResults = data?.total_results || 0;
 
   console.log(movies);
@@ -68,39 +68,7 @@ export default async function SearchResults({
             </>
           )}
         </div>
-        {movies && movies.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {movies?.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
-        )}
-        {/* 검색된 영화가 없으면 */}
-        {!movies ||
-          (movies.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-20">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-muted-foreground mb-4">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                검색 결과가 없습니다
-              </h2>
-              <p className="text-muted-foreground text-center">
-                다른 검색어로 다시 시도해보세요.
-              </p>
-            </div>
-          ))}
+        <SearchClient movies={movies} />
       </div>
     </div>
   );
