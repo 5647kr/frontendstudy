@@ -4,7 +4,11 @@ import { useMemo, useRef, useState } from "react";
 import MovieCard from "../movies/MovieCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "next/navigation";
-import { getMovieMoreData, getMoviesData } from "@/lib/api";
+import {
+  fetchMoviesFromRoute,
+  getMovieMoreData,
+  getMoviesData,
+} from "@/lib/api";
 import { MovieCardSkeleton } from "../ui/Skeletons";
 
 export default function SearchClient({ movies }: { movies: Movie[] }) {
@@ -33,8 +37,8 @@ export default function SearchClient({ movies }: { movies: Movie[] }) {
     try {
       const res =
         mode.type === "keyword"
-          ? await getMovieMoreData(mode.value, page.current)
-          : await getMoviesData(mode.value, page.current);
+          ? await fetchMoviesFromRoute(page.current, "", mode.value)
+          : await fetchMoviesFromRoute(page.current, mode.value, "");
 
       setSearchMovies((searchMovies) => [...searchMovies, ...res.results]);
 

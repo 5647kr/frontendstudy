@@ -169,3 +169,28 @@ export async function getMovieMoreData(
     throw new Error("검색 영화 정보를 불러오지 못했습니다.");
   }
 }
+
+export async function fetchMoviesFromRoute(
+  page: number,
+  category: string,
+  keyword: string,
+) {
+  try {
+    const res = await fetch(
+      `/api/movies?page=${page}&category=${category}&keyword=${encodeURIComponent(keyword)}`,
+    );
+
+    if (!res.ok) {
+      throw new Error(
+        `TMDB API 요청 실패 (상태코드: ${res.status}) ${res.statusText} - 검색 정보 조회 실패`,
+      );
+    }
+
+    const result = await res.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error("영화 정보를 불러오지 못했습니다.");
+  }
+}
