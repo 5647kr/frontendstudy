@@ -20,6 +20,9 @@ export async function getMoviesData(
       `${API_URL}/movie/${category}?language=ko-kr&page=${page}`,
       {
         ...options,
+        next: {
+          revalidate: 60 * 60 * 24,
+        },
       },
     );
 
@@ -41,6 +44,10 @@ export async function getMovieDetailData(id: string): Promise<Movie> {
   try {
     const res = await fetch(`${API_URL}/movie/${id}?language=ko-kr`, {
       ...options,
+
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
     });
 
     if (!res.ok) {
@@ -61,6 +68,10 @@ export async function getMovieVideoData(id: string) {
   try {
     const res = await fetch(`${API_URL}/movie/${id}/videos`, {
       ...options,
+
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
     });
 
     if (!res.ok) {
@@ -82,6 +93,10 @@ export async function getMovieCreditData(id: string): Promise<MovieCredits> {
   try {
     const res = await fetch(`${API_URL}/movie/${id}/credits`, {
       ...options,
+
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
     });
 
     if (!res.ok) {
@@ -102,6 +117,10 @@ export async function getSimilarMovies(id: string) {
   try {
     const res = await fetch(`${API_URL}/movie/${id}/similar`, {
       ...options,
+
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
     });
 
     if (!res.ok) {
@@ -129,6 +148,10 @@ export async function getMovieMoreData(
       `${API_URL}/search/movie?language=ko-KR&query=${encodeURIComponent(keyword)}&page=${page}`,
       {
         ...options,
+
+        next: {
+          revalidate: 60 * 60 * 24,
+        },
       },
     );
 

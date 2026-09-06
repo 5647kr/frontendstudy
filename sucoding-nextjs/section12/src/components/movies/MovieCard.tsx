@@ -18,7 +18,9 @@ export default function MovieCard({ movie }: { movie: Movie }) {
             src={imgSrc || "/placeholder.svg"}
             alt={movie.title}
             fill
+            loading="eager"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 639px) 50vw, (max-width: 767px) 33vw, (max-width: 1023px) 25vw, 228px"
             onError={() => {
               setImgSrc("/placeholder.svg");
             }}

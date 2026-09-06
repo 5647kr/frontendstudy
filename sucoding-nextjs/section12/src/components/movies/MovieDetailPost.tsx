@@ -14,6 +14,8 @@ export default function MovieDetailPost({ img }: { img: string }) {
         alt="포스터 이미지"
         fill
         className="object-cover"
+        sizes="(max-width: 767px) 100vw, 256px"
+        loading="eager"
         onError={() => setImgSrc("/placeholder.svg")}
       />
     </>

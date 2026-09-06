@@ -22,7 +22,6 @@ export default async function SearchResults({
   const movies = data?.results ?? [];
   const totalResults = data?.total_results || 0;
 
-  console.log(movies);
   return (
     <div className="min-h-screen bg-background pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

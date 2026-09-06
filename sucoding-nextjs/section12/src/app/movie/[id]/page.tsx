@@ -23,8 +23,6 @@ export default async function MovieDetailPage({
     getSimilarMovies(id),
   ]);
 
-  console.log(video);
-
   const casting = credits.cast
     .filter((v) => v.known_for_department === "Acting" && v.order <= 4)
     .map((v) => v.name)
