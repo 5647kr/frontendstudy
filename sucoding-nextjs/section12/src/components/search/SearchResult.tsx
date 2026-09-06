@@ -19,7 +19,7 @@ export default async function SearchResults({
     data = await getMoviesData(category, 1);
   }
 
-  const movies = data?.results ?? [];
+  // const movies = data?.results ?? [];
   const totalResults = data?.total_results || 0;
 
   return (
@@ -67,7 +67,7 @@ export default async function SearchResults({
             </>
           )}
         </div>
-        <SearchClient movies={movies} />
+        <SearchClient />
       </div>
     </div>
   );

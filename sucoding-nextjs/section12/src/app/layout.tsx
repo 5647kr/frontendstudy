@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import NextThemeProvider from "@/provider/NextThemeProvider";
+import NextTanstackProvider from "@/provider/NextTanstackProvider";
 
 export const metadata: Metadata = {
   title: "Wave - 영화 스트리밍",
@@ -30,8 +31,9 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-          
-          <main>{children}</main>
+          <NextTanstackProvider>
+            <main>{children}</main>
+          </NextTanstackProvider>
         </NextThemeProvider>
       </body>
     </html>
