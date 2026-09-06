@@ -1,10 +1,10 @@
 import Link from "next/link";
-import MovieSection from "@/components/movies/MovieSection";
+// import MovieSection from "@/components/movies/MovieSection";
 import {
   getMovieCreditData,
   getMovieDetailData,
-  getMovieVideoData,
-  getSimilarMovies,
+  // getMovieVideoData,
+  // getSimilarMovies,
 } from "@/lib/api";
 import MovieDetailPost from "@/components/movies/MovieDetailPost";
 import { formatMinutesToHour } from "@/lib/utils";
@@ -16,6 +16,19 @@ import {
 } from "@/components/ui/Skeletons";
 import MovieRelatedSection from "@/components/movies/MovieRelatedSection";
 // import ScrollTop from "@/components/ui/ScrollTop";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const [movie] = await Promise.all([getMovieDetailData(id)]);
+
+  return {
+    title: `Wave - ${movie.title}`,
+  };
+}
 
 export default async function MovieDetailPage({
   params,

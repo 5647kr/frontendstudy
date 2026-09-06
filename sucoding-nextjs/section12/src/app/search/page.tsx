@@ -1,5 +1,18 @@
 import { Suspense } from "react";
 import SearchResults from "@/components/search/SearchResult";
+import { categoryName } from "@/lib/utils";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ keyword: string; category: string }>;
+}) {
+  const { keyword = "", category = "" } = await searchParams;
+
+  return {
+    title: category !== "" ? `Wave - ${categoryName(category)}` : `Wave - "${keyword}" 검색 결과`,
+  };
+}
 
 export default async function SearchPage({
   searchParams,
