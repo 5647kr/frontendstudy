@@ -15,12 +15,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="ko" className={cn("font-mono", jetbrainsMono.variable)}>
-      <body>{children}</body>
+      <body>
+        {modal}
+        {children}
+      </body>
     </html>
   );
 }
