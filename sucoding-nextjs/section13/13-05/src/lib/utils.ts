@@ -26,3 +26,9 @@ export function categoryName(category: string) {
   else if (category === "popular") return "인기작";
   else if (category === "now_playing") return "상영중";
 }
+
+export function buildQuery(params: Record<string, string>) {
+  return Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value),
+  );
+}

@@ -1,16 +1,30 @@
 "use client";
 
+import { buildQuery } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function MovieCard({ movie }: { movie: Movie }) {
+  const searchParams = useSearchParams();
+
+  const keyword = searchParams.get("keyword")?.trim() ?? "";
+  const category = searchParams.get("category")?.trim() ?? "";
+
+  const query = buildQuery({ keyword, category });
+
   const [imgSrc, setImgSrc] = useState(
     `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
   );
   return (
     <div className="group relative overflow-hidden">
-      <Link href={`/movie/${movie.id}`} className="block">
+      <Link
+        href={{
+          pathname: `/poster/${movie.id}`,
+          query,
+        }}
+        className="block">
         <div className="relative aspect-2/3 rounded-lg overflow-hidden bg-secondary">
           {/* 이미지가 없는 경우 */}
           {/* /placeholder.svg */}
@@ -33,10 +47,12 @@ export default function MovieCard({ movie }: { movie: Movie }) {
         </p>
       </div>
       <Link
-        href={`/movie/${movie.id}`}
+        href={{
+          pathname: `/poster/${movie.id}`,
+          query,
+        }}
         className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 backdrop-blur-sm text-foreground p-2 rounded-full hover:bg-background"
-        title="상세정보"
-      >
+        title="상세정보">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -46,8 +62,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+          strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" />
           <path d="M12 16v-4" />
           <path d="M12 8h.01" />

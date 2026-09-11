@@ -20,8 +20,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
@@ -30,10 +32,10 @@ export default function RootLayout({
           attribute={"class"}
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
-        >
+          disableTransitionOnChange>
           <NextTanstackProvider>
             <main>{children}</main>
+            <div className="absolute">{modal}</div>
           </NextTanstackProvider>
         </NextThemeProvider>
       </body>
