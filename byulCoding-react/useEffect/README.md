@@ -1,75 +1,42 @@
-# React + TypeScript + Vite
+# 📌 useEffect
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **한 줄 요약**: 학습한 핵심 내용이나 프로젝트의 목적을 간단히 적습니다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💡 핵심 학습 내용 (Key Concepts)
 
-## React Compiler
+### 1. 개념
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+어떤 컴포넌트가 마운트 되었을때 업데이트 되었을 때 언마운트 될때 특정 작업을 처리할 코드를 실행시켜주고 싶을 떄 사용한다.
 
-## Expanding the ESLint configuration
+### 2. 기본 문법
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+useEffect(() => {})
+인자로 콜백함수를 받는다. 이 콜백함수 내부에 작업을 작성한다.
+이는 컴포넌트가 렌더링 될때마다 콜백함수가 실행한다.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+useEffect(() => {}, [])
+두번째 인자로 빈 배열을 받을 수 있다. 이를 의존성 배열이라 부른다.
+이는 컴포넌트가 맨 처음 렌더링될 때와, 배열안의 요소의 값이 바뀔때만 실행한다.
+만약 빈 배열일 경우 맨 처음 렌더링 될때만 실행된다.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 3. CleanUp
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+useEffect에서 어떤 서비스에 구독하는 로직을 구현했다면 이후에 구독을 해제하는 클린업 작업을 처리해줘야한다.
+이를 처리하기 위해 useEffect안에 리턴값으로 함수를 넣어주면 된다.
 
 ```
+useEffect(() => {
+  // 구독...
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+  return () => {
+    // 구독 해지...
+  }
+}, [])
 ```
+
+## 📂 구현 코드 파일
+
+- 📄 [`예제 1`](./src/components/Example1.tsx)
+- 📄 [`예제 2`](./src/components/Example2.tsx)
