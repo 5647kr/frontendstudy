@@ -2,9 +2,9 @@
 
 import { buildQuery } from "@/lib/utils";
 import Image from "next/image";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import HoverPrefetchLink from "../ui/HoverPrefetchLink";
 
 export default function MovieCard({ movie }: { movie: Movie }) {
   const searchParams = useSearchParams();
@@ -19,11 +19,12 @@ export default function MovieCard({ movie }: { movie: Movie }) {
   );
   return (
     <div className="group relative overflow-hidden">
-      <Link
+      <HoverPrefetchLink
         href={{
           pathname: `/poster/${movie.id}`,
           query,
         }}
+        prefetch={true}
         className="block">
         <div className="relative aspect-2/3 rounded-lg overflow-hidden bg-secondary">
           {/* 이미지가 없는 경우 */}
@@ -40,17 +41,18 @@ export default function MovieCard({ movie }: { movie: Movie }) {
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
-      </Link>
+      </HoverPrefetchLink>
       <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none">
         <p className="text-white text-sm font-medium line-clamp-2">
           {movie.title}
         </p>
       </div>
-      <Link
+      <HoverPrefetchLink
         href={{
           pathname: `/poster/${movie.id}`,
           query,
         }}
+        prefetch={true}
         className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 backdrop-blur-sm text-foreground p-2 rounded-full hover:bg-background"
         title="상세정보">
         <svg
@@ -67,7 +69,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
           <path d="M12 16v-4" />
           <path d="M12 8h.01" />
         </svg>
-      </Link>
+      </HoverPrefetchLink>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { loadMovieDetailView } from "@/lib/loader";
 import { formatMinutesToHourMin } from "@/lib/utils";
-import Link from "next/link";
 import MovieDetailPoster from "./MovieDetailPoster";
+import HoverPrefetchLink from "../ui/HoverPrefetchLink";
 
 export default async function MovieModalContent({ id }: { id: string }) {
   const { movie, casting, director, production } =
@@ -60,11 +60,11 @@ export default async function MovieModalContent({ id }: { id: string }) {
             </div>
           </div>
 
-          <Link
+          <HoverPrefetchLink
             href={`/movie/${movie.id}`}
             className="mt-6 inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
             상세정보 보기
-          </Link>
+          </HoverPrefetchLink>
         </div>
       </div>
     </div>

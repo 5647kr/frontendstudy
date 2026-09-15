@@ -1,4 +1,5 @@
 import MovieDetailPoster from "@/components/movies/MovieDetailPoster";
+import HoverPrefetchLink from "@/components/ui/HoverPrefetchLink";
 import { getMovieDetailData } from "@/lib/api";
 import { loadMovieDetailView } from "@/lib/loader";
 import { formatMinutesToHourMin } from "@/lib/utils";
@@ -81,11 +82,11 @@ export default async function PosterPage({
             </div>
 
             <div className="flex gap-4">
-              <Link
+              <HoverPrefetchLink
                 href={`/movie/${movie.id}`}
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
                 상세정보 보기
-              </Link>
+              </HoverPrefetchLink>
               <Link
                 href="/"
                 className="inline-flex items-center justify-center px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors">
