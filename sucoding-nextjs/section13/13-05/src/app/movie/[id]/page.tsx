@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getMovieCreditData, getMovieDetailData } from "@/lib/api";
+import { getMovieDetailData } from "@/lib/api";
 import MovieDetailPoster from "@/components/movies/MovieDetailPoster";
 import { formatMinutesToHourMin } from "@/lib/utils";
 import { Suspense } from "react";
@@ -9,6 +9,7 @@ import {
   MovieVideoSectionSkeleton,
 } from "@/components/ui/Skeletons";
 import MovieRelatedSection from "@/components/movies/MovieRelatedSection";
+import { loadMovieDetailView } from "@/lib/loader";
 
 export async function generateMetadata({
   params,
@@ -29,21 +30,8 @@ export default async function MovieDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [movie, credits] = await Promise.all([
-    getMovieDetailData(id),
-    getMovieCreditData(id),
-  ]);
-
-  const casting = credits.cast
-    .filter((v) => v.known_for_department === "Acting" && v.order <= 4)
-    .map((v) => v.name)
-    .join(" · ");
-
-  const director = credits.crew
-    .filter((v) => v.job === "Director")
-    .map((v) => v.name)[0];
-
-  const production = movie.production_companies.map((v) => v.name).join(" · ");
+  const { movie, casting, director, production } =
+    await loadMovieDetailView(id);
 
   return (
     <>
@@ -73,15 +61,21 @@ export default async function MovieDetailPage({
 
               <div className="space-y-4 text-foreground">
                 <p>
-                  <span className="font-semibold">Director:</span>
+                  <span className="font-semibold">개봉일:</span>
+                  <span className="text-muted-foreground ml-1">
+                    {movie.release_date}
+                  </span>
+                </p>
+                <p>
+                  <span className="font-semibold">감독:</span>
                   <span className="text-muted-foreground ml-1">{director}</span>
                 </p>
                 <p>
-                  <span className="font-semibold">Casting:</span>
+                  <span className="font-semibold">출연:</span>
                   <span className="text-muted-foreground ml-1">{casting}</span>
                 </p>
                 <p>
-                  <span className="font-semibold">Production:</span>
+                  <span className="font-semibold">제작사:</span>
                   <span className="text-muted-foreground ml-1">
                     {production}
                   </span>
@@ -111,8 +105,7 @@ export default async function MovieDetailPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -122,8 +115,7 @@ export default async function MovieDetailPage({
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+              strokeLinejoin="round">
               <path d="m12 19-7-7 7-7" />
               <path d="M19 12H5" />
             </svg>
