@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/purity */
+// import { connection } from "next/server";
+"use cache"
 
 export default async function UniqueContent() {
+  // await connection();
   // Non-deterministic operations
   const random = Math.random();
   const now = Date.now();
