@@ -1,16 +1,18 @@
 import { useEffect, useRef } from "react";
 
 export default function Example1() {
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     console.log(inputRef);
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
   const login = () => {
-    alert(`환영합니다. ${inputRef.current.value!}`);
-    inputRef.current.focus();
+    if (inputRef.current) {
+      alert(`환영합니다. ${inputRef.current.value!}`);
+      inputRef.current.focus();
+    }
   };
 
   return (
