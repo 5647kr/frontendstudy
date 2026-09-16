@@ -7,10 +7,6 @@ export default function App() {
     <>
       <h1>예제 1</h1>
       <Example1 />
-      <h1>예제 2</h1>
-      <Example2 />
-      <h1>예제 3</h1>
-      <Example3 />
     </>
   );
 }
