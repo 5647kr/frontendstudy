@@ -14,5 +14,10 @@ export default async function PostPage({
   const search = await searchParams;
   const { id } = await params;
 
-  return <h1>캐싱할 수 없음 </h1>;
+  return <h1>캐싱할 수 없음: {paramsDouble(id)} </h1>;
+}
+
+async function paramsDouble(id: string) {
+  "use cache";
+  return Number(id) * 2;
 }
