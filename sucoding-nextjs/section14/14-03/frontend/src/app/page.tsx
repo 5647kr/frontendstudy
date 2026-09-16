@@ -1,19 +1,11 @@
-import CacheComponent from "@/components/CacheComponent";
-import DynamicComponent from "@/components/DynamicComponent";
-import StaticComponent from "@/components/StaticComponent";
+"use cache";
+export default async function Page() {
+  const res = await fetch("http://localhost:4000/random1");
+  const randomNumber = await res.json();
 
-export default function Page() {
   return (
     <>
-      {/* 정적 콘텐츠 - 자동 프리렌더링 */}
-      <StaticComponent />
-      {/* 캐시된 동적 콘텐츠 - 정적 셸 */}
-      <CacheComponent />
-
-      {/* 동적 콘텐츠 - 요청 시점 스트리밍 */}
-      <Suspense fallback={<h1>loading...</h1>}>
-        <DynamicComponent />
-      </Suspense>
+      <h1>Random Number: {randomNumber}</h1>
     </>
   );
 }
