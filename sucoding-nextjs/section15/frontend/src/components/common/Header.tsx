@@ -7,14 +7,19 @@ import {
   EditIcon,
   LoginIcon,
   LogoutIcon,
+  MoonIcon,
   SunIcon,
   UserIcon,
 } from "../ui/Icons";
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import useIsMounted from "@/hooks/useIsMounted";
 
 export default function Header() {
   const router = useRouter();
-  const theme = "dark";
+  // const theme = "dark";
+  const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useIsMounted();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -44,40 +49,44 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/blog"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Blog
           </Link>
 
           <button
             className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
             aria-label="Toggle theme"
-          >
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }>
+            {mounted &&
+              (resolvedTheme === "dark" ? (
+                <MoonIcon className="h-5 w-5" />
+              ) : (
+                <SunIcon className="h-5 w-5" />
+              ))}
             {/* <MoonIcon className="h-5 w-5" /> */}
-            <SunIcon className="h-5 w-5" />
+            {/* <SunIcon className="h-5 w-5" /> */}
           </button>
 
           <Link
             href="/write"
             className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-80"
-            aria-label="Write new post"
-          >
+            aria-label="Write new post">
             <EditIcon className="h-4 w-4" />
           </Link>
 
           <Link
             href="/login"
             className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
-            aria-label="Sign in"
-          >
+            aria-label="Sign in">
             <LoginIcon className="h-5 w-5" />
           </Link>
 
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-border transition-colors hover:border-primary"
-            >
+              className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-border transition-colors hover:border-primary">
               <Image
                 src="/images/avatar.jpg"
                 alt="User avatar"
@@ -99,8 +108,7 @@ export default function Header() {
                 <Link
                   href="/mypage"
                   onClick={() => setShowDropdown(false)}
-                  className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-secondary"
-                >
+                  className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-secondary">
                   <UserIcon className="h-4 w-4" />
                   My Page
                 </Link>
@@ -109,8 +117,7 @@ export default function Header() {
                     setShowDropdown(false);
                     router.push("/login");
                   }}
-                  className="flex w-full items-center gap-2 px-4 py-3 text-sm text-foreground transition-colors hover:bg-secondary"
-                >
+                  className="flex w-full items-center gap-2 px-4 py-3 text-sm text-foreground transition-colors hover:bg-secondary">
                   <LogoutIcon className="h-4 w-4" />
                   Sign out
                 </button>

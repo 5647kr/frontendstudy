@@ -5,6 +5,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 
 import "./globals.css";
+import NextThemeProvider from "@/providers/NextThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,14 +29,20 @@ export default function RootLayout({
   auth: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`dark ${inter.variable}`}>
+    <html lang="ko" className={`${inter.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <div className="absolute">{auth}</div>
+        <NextThemeProvider
+          attribute={"class"}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <div className="absolute">{auth}</div>
+        </NextThemeProvider>
       </body>
     </html>
   );
