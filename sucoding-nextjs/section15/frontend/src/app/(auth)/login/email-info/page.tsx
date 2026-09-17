@@ -1,4 +1,5 @@
 import EmailInfoForm from "@/components/auth/EmailInfoForm";
+import { Suspense } from "react";
 
 export default function EmailInfoPage() {
   return (
@@ -14,7 +15,9 @@ export default function EmailInfoPage() {
             </p>
           </div>
 
-          <EmailInfoForm />
+          <Suspense fallback={null}>
+            <EmailInfoForm />
+          </Suspense>
         </div>
       </div>
     </div>

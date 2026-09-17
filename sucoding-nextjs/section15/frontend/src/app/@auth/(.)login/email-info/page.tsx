@@ -1,5 +1,6 @@
 import Modal from "@/components/common/Modal";
 import EmailInfoForm from "@/components/auth/EmailInfoForm";
+import { Suspense } from "react";
 
 export default function EmailInfoInterceptPage() {
   return (
@@ -14,7 +15,9 @@ export default function EmailInfoInterceptPage() {
           </p>
         </div>
 
-        <EmailInfoForm />
+        <Suspense fallback={null}>
+          <EmailInfoForm />
+        </Suspense>
       </div>
     </Modal>
   );
