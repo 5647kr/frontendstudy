@@ -21,13 +21,13 @@ export default function LoginMain() {
           <div className="h-px flex-1 bg-border" />
         </div>
 
-        <button
-          type="button"
+        <Link
+          href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}
           className="flex h-12 items-center justify-center gap-2 rounded-lg bg-[#FEE500] text-sm font-medium text-[#191919] transition-opacity hover:opacity-90"
         >
           <KakaoIcon className="h-5 w-5" />
           Continue with Kakao
-        </button>
+        </Link>
 
         <div className="flex items-center gap-3">
           <div className="h-px flex-1 bg-border" />
